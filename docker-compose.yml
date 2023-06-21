@@ -1,15 +1,15 @@
 version: '3'
 
 services:
-  pgdb:
+  lms-pg:
     image: postgres
-    container_name: pg_server_api0121
+    container_name: my_database_server
     ports:
-      - '5550:5432'
+      - '5678:5432'
     environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=api-starter-0121
+      - POSTGRES_DB=lms-db-dev
     volumes:
       - ./docker/pg/postgres.conf:/etc/postgresql/postgresql.conf
       - ./data/pg:/var/lib/postgresql/data
@@ -18,17 +18,16 @@ services:
       - postgres
     restart: always
 
-  pgadminFp:
-    container_name: pgadmin_0121
+  lms-admin:
+    container_name: my_pgAdmin_container
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-adming@admin.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_SERVER_JSON_FILE: /tmp/.pgadmin/servers.json
     volumes:
       - ./data/pgadmin:/tmp/.pgadmin
     ports:
-      - "${PGADMIN_PORT:-5051}:80"
+      - "8090:80"
     networks:
       - postgres
     restart: unless-stopped
